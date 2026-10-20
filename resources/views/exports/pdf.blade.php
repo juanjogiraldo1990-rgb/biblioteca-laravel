@@ -16,7 +16,6 @@
 <body>
     <h1>{{ $title }}</h1>
     <p class="subtitle">Generado el {{ now()->format('d/m/Y H:i') }}</p>
-
     <table>
         <thead>
             <tr>

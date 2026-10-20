@@ -43,8 +43,12 @@ class BookIndexPage extends IndexPage
         return [
             ActionButton::make('Exportar Excel', $this->exportUrl('excel'))
                 ->icon('document-arrow-down'),
+
             ActionButton::make('Exportar PDF', $this->exportUrl('pdf'))
                 ->icon('document-text'),
+
+            ActionButton::make('Carga Masiva', route('export.import-form'))
+                ->icon('arrow-up-tray'),
         ];
     }
 
