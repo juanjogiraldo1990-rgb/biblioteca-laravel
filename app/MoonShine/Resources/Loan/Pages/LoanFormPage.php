@@ -34,11 +34,12 @@ class LoanFormPage extends FormPage
 
             Select::make('Estado', 'status')
                 ->options([
-                    'active'   => 'Activo',
+                    'pending'  => 'Pendiente',          // <-- AGREGAMOS ESTA OPCIÓN
+                    'active'   => 'Activo (Aprobado)',
                     'returned' => 'Devuelto',
                     'overdue'  => 'Atrasado',
                 ])
-                ->default('active'),
+                ->default('pending'),
         ];
     }
 
@@ -50,7 +51,7 @@ class LoanFormPage extends FormPage
             'loan_date'   => ['required', 'date'],
             'due_date'    => ['required', 'date', 'after_or_equal:loan_date'],
             'return_date' => ['nullable', 'date', 'after_or_equal:loan_date'],
-            'status'      => ['required', 'in:active,returned,overdue'],
+            'status'      => ['required', 'in:pending,active,returned,overdue'],
         ];
     }
 }

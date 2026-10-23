@@ -4,44 +4,43 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\MoonShineUserRole;
 
-use MoonShine\Laravel\Models\MoonshineUserRole;
-use MoonShine\Laravel\Resources\ModelResource;
+use App\Models\MoonshineUserRole;
 use App\MoonShine\Resources\MoonShineUserRole\Pages\MoonShineUserRoleFormPage;
 use App\MoonShine\Resources\MoonShineUserRole\Pages\MoonShineUserRoleIndexPage;
-use MoonShine\MenuManager\Attributes\Group;
-use MoonShine\MenuManager\Attributes\Order;
-use MoonShine\Support\Attributes\Icon;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\Ability;
 use MoonShine\Support\Enums\Action;
-use MoonShine\Support\ListOf;
 
 /**
- * @extends ModelResource<MoonshineUserRole, MoonShineUserRoleIndexPage, MoonShineUserRoleFormPage, null>
+ * @extends ModelResource<MoonshineUserRole, MoonShineUserRoleIndexPage, MoonShineUserRoleFormPage>
  */
-#[Icon('bookmark')]
-#[Group('moonshine::ui.resource.system', 'users', translatable: true)]
-#[Order(1)]
 class MoonShineUserRoleResource extends ModelResource
 {
     protected string $model = MoonshineUserRole::class;
 
+    protected string $title = 'Roles';
+
     protected string $column = 'name';
 
-    protected bool $createInModal = true;
-
-    protected bool $detailInModal = true;
-
-    protected bool $editInModal = true;
-
-    protected bool $cursorPaginate = true;
-
-    public function getTitle(): string
+    /**
+     * Bloquear acciones específicas si no es Admin
+     */
+    public function isCan(Ability $ability): bool
     {
-        return __('moonshine::ui.resource.role');
-    }
+        if (! auth('moonshine')->user()?->isAdmin()) {
+            $accionesBloqueadas = [
+                Action::CREATE->value,
+                Action::UPDATE->value,
+                Action::DELETE->value,
+                Action::MASS_DELETE->value,
+            ];
 
-    protected function activeActions(): ListOf
-    {
-        return parent::activeActions()->except(Action::VIEW);
+            if (in_array($ability->value, $accionesBloqueadas)) {
+                return false;
+            }
+        }
+
+        return parent::isCan($ability);
     }
 
     protected function pages(): array
@@ -49,14 +48,6 @@ class MoonShineUserRoleResource extends ModelResource
         return [
             MoonShineUserRoleIndexPage::class,
             MoonShineUserRoleFormPage::class,
-        ];
-    }
-
-    protected function search(): array
-    {
-        return [
-            'id',
-            'name',
         ];
     }
 }

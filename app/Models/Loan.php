@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Loan extends Model
 {
     protected $fillable = [
-        'book_id', 'member_id', 'loan_date', 'due_date', 'return_date', 'status',
+        'book_id', 'member_id', 'user_id', 'loan_date', 'due_date', 'return_date', 'status',
     ];
 
     protected $casts = [
@@ -24,5 +24,10 @@ class Loan extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(MoonshineUser::class, 'user_id');
     }
 }

@@ -9,12 +9,12 @@ class BookPolicy
 {
     public function viewAny(MoonshineUser $user): bool
     {
-        return true;
+        return true; // Todos pueden ver la tabla
     }
 
     public function view(MoonshineUser $user, Book $book): bool
     {
-        return true;
+        return true; // Todos pueden ver el detalle
     }
 
     public function create(MoonshineUser $user): bool
@@ -24,12 +24,12 @@ class BookPolicy
 
     public function update(MoonshineUser $user, Book $book): bool
     {
-        return $user->isAdmin() || $user->isBibliotecario();
+        return $user->isAdmin() || $user->isBibliotecario(); // Admin y Bibliotecario pueden editar
     }
 
     public function delete(MoonshineUser $user, Book $book): bool
     {
-        return $user->isAdmin();
+        return $user->isAdmin(); // Solo el Admin puede borrar
     }
 
     public function massDelete(MoonshineUser $user): bool

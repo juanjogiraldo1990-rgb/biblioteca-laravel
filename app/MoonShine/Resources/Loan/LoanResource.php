@@ -4,26 +4,22 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Loan;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Loan;
-use App\MoonShine\Resources\Loan\Pages\LoanIndexPage;
-use App\MoonShine\Resources\Loan\Pages\LoanFormPage;
 use App\MoonShine\Resources\Loan\Pages\LoanDetailPage;
-
+use App\MoonShine\Resources\Loan\Pages\LoanFormPage;
+use App\MoonShine\Resources\Loan\Pages\LoanIndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Contracts\Core\PageContract;
 
 /**
  * @extends ModelResource<Loan, LoanIndexPage, LoanFormPage, LoanDetailPage>
  */
 class LoanResource extends ModelResource
-
 {
     protected string $model = Loan::class;
 
-    protected string $title = 'Loans';
+    protected string $title = 'Préstamos';
 
-    protected string $column = 'id';       
+    protected string $column = 'id';
     protected bool $withPolicy = true;
 
     /**
@@ -38,9 +34,17 @@ class LoanResource extends ModelResource
         ];
     }
 
-
-public function export(): ?ExportHandler
+    /**
+     * Filtra los préstamos si el usuario es Lector.
+     */
+    protected function query(): \Illuminate\Database\Eloquent\Builder
     {
-        return MixedExportHandler::make('Exportar');
+        $query = parent::query();
+
+        if (auth('moonshine')->user()?->isLector()) {
+            return $query->where('user_id', auth('moonshine')->user()->id);
+        }
+
+        return $query;
     }
 }

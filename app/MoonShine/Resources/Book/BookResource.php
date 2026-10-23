@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources\Book;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Book;
-use App\MoonShine\Resources\Book\Pages\BookIndexPage;
-use App\MoonShine\Resources\Book\Pages\BookFormPage;
 use App\MoonShine\Resources\Book\Pages\BookDetailPage;
-
+use App\MoonShine\Resources\Book\Pages\BookFormPage;
+use App\MoonShine\Resources\Book\Pages\BookIndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Contracts\Core\PageContract;
 
-/**
- * @extends ModelResource<Book, BookIndexPage, BookFormPage, BookDetailPage>
- */
 class BookResource extends ModelResource
 {
     protected string $model = Book::class;
-    protected string $title = 'Books';
+    protected string $title = 'Libros';
     protected string $column = 'title';
+    
+    // ESTO ES CLAVE: Le decimos a MoonShine que evalúe las políticas
     protected bool $withPolicy = true;
+    
+    // Le decimos explícitamente qué botones queremos en la tabla
+    protected array $activeActions = ['create', 'view', 'edit', 'delete'];
 
-    /**
-     * @return list<class-string<PageContract>>
-     */
     protected function pages(): array
     {
         return [
@@ -34,9 +30,4 @@ class BookResource extends ModelResource
             BookDetailPage::class,
         ];
     }
-
-public function export(): ?ExportHandler
-{
-    return MixedExportHandler::make('Exportar');
-}
 }
