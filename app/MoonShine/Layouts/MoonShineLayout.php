@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use MoonShine\AssetManager\Css;
 use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\ColorManager\Palettes\RosePalette;
 use MoonShine\Contracts\ColorManager\PaletteContract;
@@ -22,6 +23,14 @@ final class MoonShineLayout extends AppLayout
      */
     protected ?string $palette = RosePalette::class;
 
+    protected function assets(): array
+    {
+        return [
+            ...parent::assets(),
+            Css::make('/css/custom.css'),
+        ];
+    }
+
     protected function menu(): array
     {
         return [
@@ -36,7 +45,7 @@ final class MoonShineLayout extends AppLayout
     }
 
     /**
-     * Le decimos a MoonShine que no renderice ningún pie de página.
+     * Aquí ocultamos el pie de página de CutCode.
      */
     protected function footer(): ?string
     {

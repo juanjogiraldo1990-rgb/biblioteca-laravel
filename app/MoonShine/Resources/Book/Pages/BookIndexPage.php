@@ -28,10 +28,7 @@ class BookIndexPage extends IndexPage
             Image::make('Imagen', 'image'),
             Text::make('Título', 'title'),
             Text::make('ISBN', 'isbn'),
-            
-            // Quitamos textWrap(), dejamos solo el badge gris
-            Text::make('Descripción', 'description')
-                ->badge('gray'),
+            // La línea de Descripción fue eliminada
             
             Number::make('Precio', 'price'),
             Number::make('Stock', 'stock'),
@@ -45,16 +42,20 @@ class BookIndexPage extends IndexPage
 
     protected function buttons(): ListOf
     {
+        // Traemos los botones por defecto (el Ojo 👁️)
+        $buttons = parent::buttons();
+
+        // Si es Lector, añadimos el botón de Solicitar Préstamo
         if (auth('moonshine')->user()?->isLector()) {
-            return new ListOf(ActionButton::class, [
+            $buttons->add(
                 ActionButton::make('Solicitar Préstamo')
                     ->canSee(fn($item) => $item->stock > 0)
                     ->method('solicitar')
-                    ->icon('hand-raised'),
-            ]);
+                    ->icon('hand-raised')
+            );
         }
 
-        return parent::buttons();
+        return $buttons;
     }
 
     #[AsyncMethod]

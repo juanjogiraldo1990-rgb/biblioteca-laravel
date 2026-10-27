@@ -1,24 +1,12 @@
-/* Forzar que la celda de descripción baje de línea */
-td[data-column="description"] {
-    white-space: normal !important;
-    word-break: break-word !important;
-    min-width: 250px !important;
-    max-width: 350px !important;
-    vertical-align: top !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+/* 1. Ocultar SOLO el footer de CutCode sin tocar el menú de perfil */
+footer {
+    display: none !important;
 }
 
-/* Hacer que el badge (el recuadro gris) se ajuste al texto */
-td[data-column="description"] .badge,
-td[data-column="description"] span {
-    white-space: normal !important;
-    word-break: break-word !important;
-    display: inline-block !important;
-    width: 100% !important; /* Ocupa todo el ancho de la celda */
-    max-width: 320px !important; /* Ancho máximo del recuadro gris */
-    line-height: 1.4 !important;
-    text-align: left !important;
-    padding: 6px 10px !important;
-    box-sizing: border-box !important;
+/* 2. Texto de la descripción corto y bonito */
+td[data-column="description"] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
 }
