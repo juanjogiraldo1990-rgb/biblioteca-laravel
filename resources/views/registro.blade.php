@@ -15,15 +15,39 @@
             <div class="bg-green-500 text-white p-3 rounded mb-4">{{ session('success') }}</div>
         @endif
 
+        @if($errors->any())
+            <div class="bg-red-500 text-white p-3 rounded mb-4">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>- {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('registro.guardar') }}" method="POST">
             @csrf
             <div class="mb-4">
                 <label class="block text-sm font-bold mb-2">Nombre Completo</label>
-                <input type="text" name="name" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
+                <input type="text" name="name" value="{{ old('name') }}" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
             </div>
-            <div class="mb-6">
+            
+            <div class="mb-4">
                 <label class="block text-sm font-bold mb-2">Correo Electrónico</label>
-                <input type="email" name="email" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
+                <input type="email" name="email" value="{{ old('email') }}" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <!-- NUEVO CAMPO: CONTRASEÑA -->
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2">Contraseña</label>
+                <input type="password" name="password" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
+                <p class="text-xs text-gray-400 mt-1">Mínimo 8 caracteres, 1 mayúscula, 1 número y 1 símbolo.</p>
+            </div>
+
+            <!-- NUEVO CAMPO: CONFIRMAR CONTRASEÑA -->
+            <div class="mb-6">
+                <label class="block text-sm font-bold mb-2">Confirmar Contraseña</label>
+                <input type="password" name="password_confirmation" required class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-indigo-500">
             </div>
 
             <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
